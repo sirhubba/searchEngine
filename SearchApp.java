@@ -70,12 +70,10 @@ public class SearchApp{
 
       //Check which entries of docToWordCount that contains the search term
       if(m.getValue().containsKey(query)){
-        //termTotalFreq += 1;
         for (Map.Entry<String, Integer> m1 : m.getValue().entrySet()) {
+          docSize += m1.getValue();
           if(m1.getKey().equals(query)){
             termFreq += m1.getValue();
-          } else {
-            docSize += m1.getValue();
           }
         }
         //Divide the amount of times the search term is used in this doc by the
@@ -87,7 +85,17 @@ public class SearchApp{
         TFscore = 0;
       }
     }
-    //System.out.println(TFIDFscore);
-    System.out.println(docToScore);
+    //To be able to print a sorted version of the docToScore map
+    List<Map.Entry<String, Double>> output = new LinkedList<Map.Entry<String, Double>>
+                                                              (docToScore.entrySet());
+    Collections.sort(output, new Comparator<Map.Entry<String, Double>>() {
+      @Override
+      public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2){
+        return o2.getValue().compareTo(o1.getValue());
+      }
+    });
+    for(Map.Entry<String, Double> e : output){
+      System.out.println(e.getKey());
+    }
   }
 }
